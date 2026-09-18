@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Redimensiona imágenes y videos de forma local y segura, con galería y filtros sin subir archivos a la nube."
+    />
+    <title>Local Media Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <div class="brand-mark">LM</div>
+          <div>
+            <p class="eyebrow">Privacidad total</p>
+            <h1>Local Media Studio</h1>
+          </div>
+        </div>
+
+        <nav class="nav-panel">
+          <button class="nav-link active" type="button">Redimensionar</button>
+          <button class="nav-link" type="button" data-target="gallerySection">Galería</button>
+        </nav>
+
+        <div class="privacy-box">
+          <span class="status-dot"></span>
+          <p>Procesamiento 100% local. Nada se sube a internet.</p>
+        </div>
+      </aside>
+
+      <main class="content">
+        <section class="hero card">
+          <div>
+            <p class="eyebrow accent">Editor local</p>
+            <h2>Convierte, redimensiona y organiza tus archivos sin salir del navegador.</h2>
+          </div>
+          <div class="hero-actions">
+            <label class="button primary" for="imageInput">Subir imágenes</label>
+            <label class="button secondary" for="videoInput">Subir videos</label>
+            <input id="imageInput" type="file" accept="image/*" multiple hidden />
+            <input id="videoInput" type="file" accept="video/*" multiple hidden />
+          </div>
+        </section>
+
+        <section class="workspace-grid">
+          <div class="card controls-panel">
+            <div class="panel-header">
+              <h3>Configuración de salida</h3>
+            </div>
+
+            <div class="field-row two-cols">
+              <label>
+                <span>Ancho final</span>
+                <input id="targetWidth" type="number" min="1" value="1280" />
+              </label>
+              <label>
+                <span>Altura final</span>
+                <input id="targetHeight" type="number" min="1" value="720" />
+              </label>
+            </div>
+
+            <div class="field-row two-cols">
+              <label>
+                <span>Calidad</span>
+                <input id="qualityValue" type="range" min="0.1" max="1" step="0.05" value="0.82" />
+              </label>
+              <div class="quality-readout">
+                <span>0.82</span>
+              </div>
+            </div>
+
+            <div class="field-row two-cols">
+              <label>
+                <span>Formato de imagen</span>
+                <select id="imageFormat">
+                  <option value="image/jpeg">JPEG</option>
+                  <option value="image/webp">WEBP</option>
+                  <option value="image/png">PNG</option>
+                </select>
+              </label>
+              <label>
+                <span>FPS del video</span>
+                <input id="videoFps" type="number" min="1" max="60" value="24" />
+              </label>
+            </div>
+
+            <div class="actions-group">
+              <button id="resizeImagesBtn" class="button primary" type="button">Redimensionar imágenes</button>
+              <button id="resizeVideosBtn" class="button secondary" type="button">Redimensionar videos</button>
+            </div>
+
+            <div id="statusBox" class="status-box" aria-live="polite">
+              Listo para procesar contenidos locales.
+            </div>
+          </div>
+
+          <div class="card summary-panel">
+            <div class="panel-header">
+              <h3>Resumen</h3>
+            </div>
+            <ul class="summary-list">
+              <li>
+                <span>Archivos cargados</span>
+                <strong id="totalFilesStat">0</strong>
+              </li>
+              <li>
+                <span>Imágenes</span>
+                <strong id="imageCountStat">0</strong>
+              </li>
+              <li>
+                <span>Videos</span>
+                <strong id="videoCountStat">0</strong>
+              </li>
+              <li>
+                <span>Tamaño total</span>
+                <strong id="totalSizeStat">0 MB</strong>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="gallerySection" class="card gallery-panel">
+          <div class="panel-header sticky-header">
+            <div>
+              <p class="eyebrow accent">Biblioteca</p>
+              <h3>Galería organizada</h3>
+            </div>
+            <button id="clearGalleryBtn" class="button ghost" type="button">Vaciar</button>
+          </div>
+
+          <div class="filters-grid">
+            <label class="search-box">
+              <span>Búsqueda</span>
+              <input id="searchInput" type="search" placeholder="Buscar por nombre, tipo o etiqueta" />
+            </label>
+            <label>
+              <span>Tipo</span>
+              <select id="typeFilter">
+                <option value="all">Todos</option>
+                <option value="image">Imágenes</option>
+                <option value="video">Videos</option>
+              </select>
+            </label>
+            <label>
+              <span>Min ancho</span>
+              <input id="minWidthFilter" type="number" min="1" placeholder="0" />
+            </label>
+            <label>
+              <span>Max ancho</span>
+              <input id="maxWidthFilter" type="number" min="1" placeholder="0" />
+            </label>
+            <label>
+              <span>Min alto</span>
+              <input id="minHeightFilter" type="number" min="1" placeholder="0" />
+            </label>
+            <label>
+              <span>Max alto</span>
+              <input id="maxHeightFilter" type="number" min="1" placeholder="0" />
+            </label>
+            <label>
+              <span>Ordenar</span>
+              <select id="sortFilter">
+                <option value="newest">Más recientes</option>
+                <option value="oldest">Más antiguos</option>
+                <option value="largest">Más grandes</option>
+                <option value="smallest">Más pequeños</option>
+                <option value="name">Nombre A-Z</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="galleryGrid" class="gallery-grid" aria-live="polite"></div>
+          <div id="emptyState" class="empty-state hidden">
+            <p>No hay archivos en la galería todavía.</p>
+            <span>Sube imágenes o videos desde el panel superior para comenzar.</span>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="previewModal" class="modal hidden" aria-modal="true" role="dialog">
+      <div class="modal-backdrop" data-close-modal="true"></div>
+      <div class="modal-content">
+        <button class="modal-close" type="button" data-close-modal="true">×</button>
+        <div id="modalMedia" class="modal-media"></div>
+      </div>
+    </div>
+
+    <template id="mediaCardTemplate">
+      <article class="media-card">
+        <div class="media-thumb"></div>
+        <div class="media-body">
+          <div class="media-meta-row">
+            <span class="media-kind"></span>
+            <button class="mini-button delete-btn" type="button">Eliminar</button>
+          </div>
+          <h4 class="media-name"></h4>
+          <div class="media-stats"></div>
+          <div class="media-actions">
+            <button class="mini-button preview-btn" type="button">Vista</button>
+            <button class="mini-button download-btn" type="button">Descargar</button>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
